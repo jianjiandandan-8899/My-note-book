@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head><title>DevNotes</title></head>
+    <body>
+        <h1>My Notes</h1>
+        <a href="/add">Add New Note</a>
+        {% for note in notes%}
+        <div>
+            <h2>{{note.title}}</h2>
+            <p>{{note.content}}</p>
+        </div>
+        {% endfor %}
+    </body>
+</html>

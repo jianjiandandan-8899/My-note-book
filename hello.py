@@ -1,20 +1,14 @@
+fruits = ["apple" , "banana" , "cherry"]
+print(fruits[0])
 
-name = "Alice"
-age = 30
+print(len(fruits))
 
+fruits.append("date")
 
-print(f"hello, {name}!")
+for fruit in fruits:
+    print(fruit)
 
-def greet(person):
-    return f"hello,{person}"
+note = {"title": "shopping", "content": "milk"}
 
-message = greet("Bob")
-print(message)
-
-def add(a,b):
-    
-    return a + b
-
-add(5,3)
-
-
+print(note["title"])
+print(note["content"])
