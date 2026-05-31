@@ -42,8 +42,7 @@ def add_note():
         conn = sqlite3.connect("notes.db")
         cursor = conn.cursor()
 
-        sql = f"INSERT INTO notes (title, content) VALUES ('{title}', '{content}')"
-        cursor.execute(sql)
+        cursor.execute("INSERT INTO notes (title, content) VALUES (?, ?)", (title, content))
 
         conn.commit()
         conn.close()
@@ -53,16 +52,20 @@ def add_note():
 
     return render_template("add.html")
 
+
+
 @app.route("/search", methods=["GET","POST"])
 def search_note():
     if request.method == "POST":
         keyword = request.form["keyword"]
+        if keyword == "":
+            return render_template("search.html", notes=[])
 
         conn = sqlite3.connect("notes.db")
         cursor = conn.cursor()
         
-        sql = f"SELECT id, title, content FROM notes WHERE title LIKE '%{keyword}%'"
-        cursor.execute(sql)
+
+        cursor.execute("SELECT id, title, content FROM notes WHERE title LIKE ?", (f"%{keyword}%",))
         rows = cursor.fetchall()
 
         notes = [
