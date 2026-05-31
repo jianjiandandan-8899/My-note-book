@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>search note</title>
+    </head>
+    <body>
+        <h1>search note</h1>
+        <form action="/search" method="POST">
+            <div>
+               <label >title</label> 
+               <input name="keyword">
+            </div>
+            <button type="submit">submit</button>
+        {% for note in notes%}
+        <div>
+            <h2>{{note.title}}</h2>
+            <p>{{note.content}}</p>
+        </div>
+        {% endfor %}
+        </form>
+
+         <a href="/">Back to Home</a>
+    </body>
+</html>
