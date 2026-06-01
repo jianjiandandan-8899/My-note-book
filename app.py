@@ -80,7 +80,23 @@ def search_note():
     
     return render_template("search.html")
 
+@app.route("/register", methods =["GET", "POST"])
+def register():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        
+        conn = sqlite3.connect("notes.db")
+        cursor = conn.cursor()
 
+        cursor.execute("insert into users (username, password) VALUES (?, ?)",(username,password))
+        
+        conn.commit()
+        conn.close()
+        
+        return redirect(url_for("home"))
+    
+    return render_template("register.html")
 
 
     
