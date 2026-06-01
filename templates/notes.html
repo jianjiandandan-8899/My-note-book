@@ -3,11 +3,13 @@
     <head><title>DevNotes</title></head>
     <body>
         <h1>My Notes</h1>
-        <a href="/add">Add New Note</a>
-        <a href="/search">Search a note</a>
-    
-        <a href="/register">register</a>
-
+        <ul>
+            <li><a href="/add">Add New Note</a></li>
+            <li> <a href="/search">Search a note</a></li>
+            <li> <a href="/register">register</a></li>
+            <li> <a href="/login">login</a></li>
+        </ul>
+       
         {% for note in notes%}
         <div>
             <h2>{{note.title}}</h2>

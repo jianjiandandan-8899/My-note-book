@@ -85,21 +85,59 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+
+        if not username or not password:
+            return render_template("register.html", response="Username and password required")
+        
+        
         hashword = generate_password_hash(password)
         
         conn = sqlite3.connect("notes.db")
         cursor = conn.cursor()
 
-        cursor.execute("insert into users (username, password) VALUES (?, ?)",(username, hashword))
+
         
-        conn.commit()
+
+        try:
+            cursor.execute("insert into users (username, password) VALUES (?, ?)",(username, hashword))
+            
+            conn.commit()
+
+        except sqlite3.IntegrityError:
+            conn.close()
+            return render_template("register.html", response="Username already taken")
+        
         conn.close()
-        
-        return redirect(url_for("home"))
+        return redirect(url_for("login"))
     
-    return render_template("register.html")
+    return render_template("register.html" )
 
 
+@app.route("/login", methods =["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        conn = sqlite3.connect("notes.db")
+        cursor = conn.cursor()
+
+        cursor.execute("select password from users where username =  ? ",(username, ))
+        row = cursor.fetchone()
+
+        if row is None:
+            response = "Invalid credentials"
+            return render_template("login.html", response = response)
+        
+        stored_hash = row[0]
+        
+        if check_password_hash(stored_hash, password):
+            return render_template("login.html", response = "Login successful!")
+        else:
+            return render_template("login.html", response = "Invalid credentials!")
+    
+    
+    return render_template("login.html")
     
 if __name__ == "__main__":
     app.run(debug=True)
