@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request,redirect, url_for
 import sqlite3
 from db import init_db
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 app = Flask(__name__)
@@ -85,11 +85,12 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        hashword = generate_password_hash(password)
         
         conn = sqlite3.connect("notes.db")
         cursor = conn.cursor()
 
-        cursor.execute("insert into users (username, password) VALUES (?, ?)",(username,password))
+        cursor.execute("insert into users (username, password) VALUES (?, ?)",(username, hashword))
         
         conn.commit()
         conn.close()
