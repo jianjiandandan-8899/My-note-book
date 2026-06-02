@@ -6,8 +6,13 @@
         <ul>
             <li><a href="/add">Add New Note</a></li>
             <li> <a href="/search">Search a note</a></li>
-            <li> <a href="/register">register</a></li>
-            <li> <a href="/login">login</a></li>
+    
+            {% if session.username %}
+                <li>Logged in as {{ session.username }} | <a href="/logout">Logout</a></li>
+            {% else %} 
+                <li> <a href="/login">Login</a> | <a href="/register">Register</a></li>
+            {% endif %}
+
         </ul>
        
         {% for note in notes%}

@@ -121,6 +121,8 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
+
+
         conn = sqlite3.connect("notes.db")
         cursor = conn.cursor()
 
@@ -134,13 +136,20 @@ def login():
         stored_hash = row[0]
         
         if check_password_hash(stored_hash, password):
-            return render_template("login.html", response = "Login successful!")
+            session["username"] = username
+            return redirect(url_for("home"))
         else:
             return render_template("login.html", response = "Invalid credentials!")
     
-    
     return render_template("login.html")
     
+
+@app.route("/logout")
+def logout():
+    session.pop("username",None)
+    return redirect(url_for("home"))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
     
