@@ -2,9 +2,11 @@ from flask import Flask, render_template, request,redirect, url_for
 import sqlite3
 from db import init_db
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask import session
 
 app = Flask(__name__)
+
+app.secret_key = "dev-secret-key"
 
 
 init_db()
@@ -89,7 +91,7 @@ def register():
         if not username or not password:
             return render_template("register.html", response="Username and password required")
         
-        
+
         hashword = generate_password_hash(password)
         
         conn = sqlite3.connect("notes.db")
