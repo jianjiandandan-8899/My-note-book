@@ -121,17 +121,17 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-
-
         conn = sqlite3.connect("notes.db")
         cursor = conn.cursor()
 
         cursor.execute("select password from users where username =  ? ",(username, ))
         row = cursor.fetchone()
+        conn.close()
+
 
         if row is None:
             response = "Invalid credentials"
-            return render_template("login.html", response = response)
+            return render_template("login.html", response=response)
         
         stored_hash = row[0]
         
