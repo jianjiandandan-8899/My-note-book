@@ -3,6 +3,7 @@ import sqlite3
 from db import init_db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import session
+from functools import wraps
 
 app = Flask(__name__)
 
@@ -10,6 +11,16 @@ app.secret_key = "dev-secret-key"
 
 
 init_db()
+
+def login_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if "username" not in session:
+            return redirect(url_for("login"))
+        
+        return f(*args, **kwargs)
+    
+    return wrapper
 
 
 @app.route("/")
@@ -35,6 +46,7 @@ def home():
 
 
 @app.route("/add", methods=["GET","POST"])
+@login_required
 def add_note():
     
     if request.method == "POST":
@@ -148,6 +160,11 @@ def login():
 def logout():
     session.pop("username",None)
     return redirect(url_for("home"))
+
+
+
+
+
 
 
 if __name__ == "__main__":
